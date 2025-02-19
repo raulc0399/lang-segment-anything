@@ -45,7 +45,7 @@ def inference(sam_type, box_threshold, text_threshold, image, text_prompt):
 
 with gr.Blocks(title="lang-sam") as blocks:
     with gr.Row():
-        sam_model_choices = gr.Dropdown(choices=list(SAM_MODELS.keys()), label="SAM Model", value="sam2.1_hiera_small")
+        sam_model_choices = gr.Dropdown(choices=list(SAM_MODELS.keys()), label="SAM Model", value="sam2.1_hq_hiera_large")
         box_threshold = gr.Slider(minimum=0.0, maximum=1.0, value=0.3, label="Box Threshold")
         text_threshold = gr.Slider(minimum=0.0, maximum=1.0, value=0.25, label="Text Threshold")
     with gr.Row():
@@ -61,35 +61,35 @@ with gr.Blocks(title="lang-sam") as blocks:
         outputs=output_image,
     )
 
-    examples = [
-        [
-            "sam2.1_hiera_small",
-            0.32,
-            0.25,
-            os.path.join(os.path.dirname(__file__), "assets", "fruits.jpg"),
-            "kiwi. watermelon. blueberry.",
-        ],
-        [
-            "sam2.1_hiera_small",
-            0.3,
-            0.25,
-            os.path.join(os.path.dirname(__file__), "assets", "car.jpeg"),
-            "wheel.",
-        ],
-        [
-            "sam2.1_hiera_small",
-            0.3,
-            0.25,
-            os.path.join(os.path.dirname(__file__), "assets", "food.jpg"),
-            "food.",
-        ],
-    ]
+    # examples = [
+    #     [
+    #         "sam2.1_hiera_small",
+    #         0.32,
+    #         0.25,
+    #         os.path.join(os.path.dirname(__file__), "assets", "fruits.jpg"),
+    #         "kiwi. watermelon. blueberry.",
+    #     ],
+    #     [
+    #         "sam2.1_hiera_small",
+    #         0.3,
+    #         0.25,
+    #         os.path.join(os.path.dirname(__file__), "assets", "car.jpeg"),
+    #         "wheel.",
+    #     ],
+    #     [
+    #         "sam2.1_hiera_small",
+    #         0.3,
+    #         0.25,
+    #         os.path.join(os.path.dirname(__file__), "assets", "food.jpg"),
+    #         "food.",
+    #     ],
+    # ]
 
-    gr.Examples(
-        examples=examples,
-        inputs=[sam_model_choices, box_threshold, text_threshold, image_input, text_prompt],
-        outputs=output_image,
-    )
+    # gr.Examples(
+    #     examples=examples,
+    #     inputs=[sam_model_choices, box_threshold, text_threshold, image_input, text_prompt],
+    #     outputs=output_image,
+    # )
 
 server.app = gr.mount_gradio_app(server.app, blocks, path="/gradio")
 

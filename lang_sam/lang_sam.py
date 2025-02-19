@@ -7,7 +7,7 @@ from lang_sam.models.utils import DEVICE
 
 
 class LangSAM:
-    def __init__(self, sam_type="sam2.1_hiera_small", ckpt_path: str | None = None, device=DEVICE):
+    def __init__(self, sam_type="sam2.1_hq_hiera_large", ckpt_path: str | None = None, device=DEVICE):
         self.sam_type = sam_type
 
         self.sam = SAM()

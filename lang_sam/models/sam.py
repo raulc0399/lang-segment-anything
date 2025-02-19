@@ -9,22 +9,22 @@ from sam2.sam2_image_predictor import SAM2ImagePredictor
 from lang_sam.models.utils import DEVICE
 
 SAM_MODELS = {
-    "sam2.1_hiera_tiny": {
-        "url": "https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_tiny.pt",
-        "config": "configs/sam2.1/sam2.1_hiera_t.yaml",
-    },
-    "sam2.1_hiera_small": {
-        "url": "https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_small.pt",
-        "config": "configs/sam2.1/sam2.1_hiera_s.yaml",
-    },
-    "sam2.1_hiera_base_plus": {
-        "url": "https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_base_plus.pt",
-        "config": "configs/sam2.1/sam2.1_hiera_b+.yaml",
-    },
-    "sam2.1_hiera_large": {
-        "url": "https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_large.pt",
-        "config": "configs/sam2.1/sam2.1_hiera_l.yaml",
-    },
+    # "sam2.1_hiera_tiny": {
+    #     "url": "https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_tiny.pt",
+    #     "config": "configs/sam2.1/sam2.1_hiera_t.yaml",
+    # },
+    # "sam2.1_hiera_small": {
+    #     "url": "https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_small.pt",
+    #     "config": "configs/sam2.1/sam2.1_hiera_s.yaml",
+    # },
+    # "sam2.1_hiera_base_plus": {
+    #     "url": "https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_base_plus.pt",
+    #     "config": "configs/sam2.1/sam2.1_hiera_b+.yaml",
+    # },
+    # "sam2.1_hiera_large": {
+    #     "url": "https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_large.pt",
+    #     "config": "configs/sam2.1/sam2.1_hiera_l.yaml",
+    # },
     "sam2.1_hq_hiera_large": {
         "url": "https://huggingface.co/lkeab/hq-sam/resolve/main/sam2.1_hq_hiera_large.pt?download=true",
         "config": "configs/sam2.1/sam2.1_hq_hiera_l.yaml"
