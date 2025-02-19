@@ -25,8 +25,11 @@ SAM_MODELS = {
         "url": "https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_large.pt",
         "config": "configs/sam2.1/sam2.1_hiera_l.yaml",
     },
+    "sam2.1_hq_hiera_large": {
+        "url": "https://huggingface.co/lkeab/hq-sam/resolve/main/sam2.1_hq_hiera_large.pt?download=true",
+        "config": "configs/sam2.1/sam2.1_hq_hiera_l.yaml"
+    }
 }
-
 
 class SAM:
     def build_model(self, sam_type: str, ckpt_path: str | None = None, device=DEVICE):
