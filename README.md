@@ -16,7 +16,7 @@ Language Segment-Anything is an open-source project that combines the power of i
 
 - Zero-shot text-to-bbox approach for object detection.
 - GroundingDINO detection model integration.
-- SAM 2.1
+- HQ-SAM 2
 - Batch inference support.
 - Easy endpoint deployment using the Lightning AI litserve platform.
 - Customizable text prompts for precise object segmentation.
