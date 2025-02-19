@@ -1,8 +1,12 @@
-# Language Segment-Anything
+# What has changed
 
 this is a clone of https://github.com/luca-medeiros/lang-segment-anything which was adapted to use HQ-SAM 2: Segment Anything in High Quality for Images and Videos
 
 More info: https://github.com/SysCV/sam-hq/tree/main/sam-hq2
+
+Original:
+
+# Language Segment-Anything
 
 Language Segment-Anything is an open-source project that combines the power of instance segmentation and text prompts to generate masks for specific objects in images. Built on the recently released Meta model, Segment Anything Model 2, and the GroundingDINO detection model, it's an easy-to-use and effective tool for object detection and image segmentation.
 
