@@ -58,7 +58,30 @@ def process_zoe_depth(zoe_model, img_name):
 #     process_lang_sam(langsam_model, img_name)
 
 # Load ZoeDepth model
-zoe_model = torch.hub.load('isl-org/ZoeDepth', "ZoeD_N", pretrained=True).to("cuda").eval()
-for img_name in ["l.png", "r.png"]:
-    process_zoe_depth(zoe_model, img_name)
+# zoe_model = torch.hub.load('isl-org/ZoeDepth', "ZoeD_N", pretrained=True).to("cuda").eval()
+# for img_name in ["l.png", "r.png"]:
+#     process_zoe_depth(zoe_model, img_name)
 
+from depth_anything_v2.dpt import DepthAnythingV2
+model_configs = {
+    'vits': {'encoder': 'vits', 'features': 64, 'out_channels': [48, 96, 192, 384]},
+    'vitb': {'encoder': 'vitb', 'features': 128, 'out_channels': [96, 192, 384, 768]},
+    'vitl': {'encoder': 'vitl', 'features': 256, 'out_channels': [256, 512, 1024, 1024]},
+    'vitg': {'encoder': 'vitg', 'features': 384, 'out_channels': [1536, 1536, 1536, 1536]}
+}
+
+encoder = 'vitl'
+
+model = DepthAnythingV2(**model_configs[encoder])
+model.load_state_dict(torch.load(f'checkpoints/depth_anything_v2_{encoder}.pth', map_location='cpu'))
+model = model.to("cuda").eval()
+
+for img_name in ["l.png", "r.png"]:
+    image_pil = Image.open(f"imgs/{img_name}").convert("RGB")
+    raw_depth = model.infer_image(image_pil) # HxW raw depth map in numpy
+
+    depth = Image.fromarray(raw_depth)
+
+    # Save depth image
+    depth.save(f"imgs/output/depth_depth_anything_2_{img_name}")
+    print(f"Processed depth for {img_name}")
