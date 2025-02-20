@@ -132,3 +132,4 @@ dmypy.json
 
 client.py
 imgs/
+.aider*
