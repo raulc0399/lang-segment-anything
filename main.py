@@ -1,18 +1,17 @@
 import numpy as np
 from PIL import Image
 import os
+import torch
 
 from lang_sam import LangSAM
 from lang_sam.utils import draw_image
 
+from colorize import colorize
+
 # Create output directory if it doesn't exist
 os.makedirs("imgs/output", exist_ok=True)
 
-# Initialize model
-model = LangSAM(sam_type="sam2.1_hq_hiera_large", device="cuda")
-
-# Process both images
-for img_name in ["l.png", "r.png"]:
+def process_lang_sam(model, img_name):
     # Load image
     image_pil = Image.open(f"imgs/{img_name}").convert("RGB")
     
@@ -37,7 +36,29 @@ for img_name in ["l.png", "r.png"]:
         output_image = Image.fromarray(np.uint8(output_image)).convert("RGB")
     else:
         output_image = image_pil
-        
+
     # Save output
     output_image.save(f"imgs/output/{img_name}")
     print(f"Processed {img_name}")
+
+def process_zoe_depth(zoe_model, img_name):
+    image_pil = Image.open(f"imgs/{img_name}").convert("RGB")
+    depth = zoe_model.infer_pil(image_pil)
+    
+    colored_depth = colorize(depth, cmap='gray_r')
+    raw_depth = Image.fromarray(colored_depth)
+
+    # Save depth image
+    raw_depth.save(f"imgs/output/depth_zoe_{img_name}")
+    print(f"Processed depth for {img_name}")
+
+# for img_name in ["l.png", "r.png"]:
+#     # use the segment model
+#     langsam_model = LangSAM(sam_type="sam2.1_hq_hiera_large", device="cuda")
+#     process_lang_sam(langsam_model, img_name)
+
+# Load ZoeDepth model
+zoe_model = torch.hub.load('isl-org/ZoeDepth', "ZoeD_N", pretrained=True).to("cuda").eval()
+for img_name in ["l.png", "r.png"]:
+    process_zoe_depth(zoe_model, img_name)
+
