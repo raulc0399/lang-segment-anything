@@ -11,11 +11,10 @@ class LangSAMModel:
     def __init__(self, device="cuda"):
         self.model = LangSAM(sam_type="sam2.1_hq_hiera_large", device=device)
         
-    def process_image(self, img_name):
-        # Load image
+
+    def process_image(self, img_name, return_mask=False):
+        """Process image and optionally return separated arm/hand masks"""
         image_pil = Image.open(f"imgs/{img_name}").convert("RGB")
-        
-        # Get predictions
         results = self.model.predict(
             images_pil=[image_pil],
             texts_prompt=["arms. hands."],
@@ -24,7 +23,6 @@ class LangSAMModel:
         )[0]
         
         if len(results["masks"]):
-            # Draw results on the image
             image_array = np.asarray(image_pil)
             output_image = draw_image(
                 image_array,
@@ -34,11 +32,29 @@ class LangSAMModel:
                 results["labels"],
             )
             output_image = Image.fromarray(np.uint8(output_image)).convert("RGB")
+            
+            if return_mask:
+                # Initialize masks
+                mask_shape = results["masks"][0].shape
+                arm_mask = np.zeros(mask_shape, dtype=bool)
+                hand_mask = np.zeros(mask_shape, dtype=bool)
+                
+                # Separate masks based on labels
+                for mask, label in zip(results["masks"], results["labels"]):
+                    if label == 'arms':
+                        arm_mask = np.logical_or(arm_mask, mask)
+                    elif label == 'hands':
+                        hand_mask = np.logical_or(hand_mask, mask)
+                
+                # Remove hand regions from arm mask
+                arm_mask = np.logical_and(arm_mask, ~hand_mask)
+                return arm_mask, hand_mask
         else:
             output_image = image_pil
+            if return_mask:
+                return None, None
 
-        # Save output
-        output_image.save(f"imgs/output/{img_name}")
+        output_image.save(f"imgs/output/hands_{img_name}")
         print(f"Processed {img_name}")
 
 class ZoeDepthModel:
