@@ -48,13 +48,20 @@ class LangSAMModel:
                 
                 # Remove hand regions from arm mask
                 arm_mask = np.logical_and(arm_mask, ~hand_mask)
+
+                # Save arm mask
+                arm_mask_img = Image.fromarray((arm_mask * 255).astype(np.uint8))
+                arm_mask_img.save(f"imgs/output/arm_mask_{img_name}")
+
                 return arm_mask, hand_mask
         else:
             output_image = image_pil
             if return_mask:
                 return None, None
 
+        # Save visualization
         output_image.save(f"imgs/output/hands_{img_name}")
+                    
         print(f"Processed {img_name}")
 
 class ZoeDepthModel:

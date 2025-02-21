@@ -15,6 +15,8 @@ if generate_depth:
         depth_anything_model.process_image(img_name)
 else:
     langsam_model = LangSAMModel()
+    
     for img_name in ["l.png", "r.png"]:
-        langsam_model.process_image(img_name)
+        langsam_model.process_image(img_name, return_mask=True)
+        
         
