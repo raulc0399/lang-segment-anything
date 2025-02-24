@@ -5,6 +5,10 @@ def merge_depth_images(arm_path, hand_path):
     # Read the images
     arm = cv2.imread(arm_path, cv2.IMREAD_GRAYSCALE)
     hand = cv2.imread(hand_path, cv2.IMREAD_GRAYSCALE)
+
+    kernel = np.ones((16, 16), np.uint8)
+    arm = cv2.morphologyEx(arm, cv2.MORPH_CLOSE, kernel)
+    hand = cv2.morphologyEx(hand, cv2.MORPH_CLOSE, kernel)
     
     # Create masks for each part
     # For the arm image - we want the white/gray part
@@ -14,29 +18,18 @@ def merge_depth_images(arm_path, hand_path):
     _, hand_mask = cv2.threshold(hand, 1, 255, cv2.THRESH_BINARY)
     
     # Create the final image
-    result = np.zeros_like(arm)
+    result = np.zeros_like(hand)
     
     # Copy the arm part
-    result = cv2.bitwise_and(arm, arm_mask)
+    result = cv2.bitwise_and(hand, hand_mask)
     
     # Add the hand part
-    hand_region = cv2.bitwise_and(hand, hand_mask)
+    arm_region = cv2.bitwise_and(arm, arm_mask)
     
     # Combine them
     # Where hand_region has values, use those; otherwise keep arm values
-    result = np.where(hand_region > 0, hand_region, result)
-    
-    # Create a transition mask for the wrist area
-    kernel = np.ones((5,5), np.uint8)
-    transition_mask = cv2.dilate(hand_mask, kernel) & cv2.dilate(arm_mask, kernel)
-
-    # Apply stronger blending in the transition area
-    transition_area = cv2.GaussianBlur(result, (7,7), 0)
-
-    # Blend the transition smoothly
-    alpha = cv2.GaussianBlur(transition_mask.astype(float), (15,15), 0) / 255
-    result = cv2.convertScaleAbs(result * (1 - alpha) + transition_area * alpha)
-    
+    result = np.where(arm_region > 0, arm_region, result)
+        
     return result
 
 def interpolate_gap(arm_path, hand_path):
@@ -93,9 +86,15 @@ def main():
     result = merge_depth_images(arm_image_path, hand_image_path)
 
     # result = interpolate_gap(arm_image_path, hand_image_path)
+
+    # Define the kernel for morphological operations
+    # kernel = np.ones((7, 7), np.uint8)
+
+    # Apply morphological closing
+    result_image = result # cv2.morphologyEx(result, cv2.MORPH_CLOSE, kernel)
     
     # Save the result
-    cv2.imwrite('./imgs/output/merged_depth.png', result)
+    cv2.imwrite('./imgs/output/merged_depth.png', result_image)
 
 if __name__ == "__main__":
     main()
