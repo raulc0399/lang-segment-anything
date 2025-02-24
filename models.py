@@ -50,8 +50,12 @@ class LangSAMModel:
                 arm_mask = np.logical_and(arm_mask, ~hand_mask)
 
                 # Save arm mask
-                arm_mask_img = Image.fromarray((arm_mask * 255).astype(np.uint8))
-                arm_mask_img.save(f"imgs/output/arm_mask_{img_name}")
+                # arm_mask_img = Image.fromarray((arm_mask * 255).astype(np.uint8))
+                # arm_mask_img.save(f"imgs/output/arm_mask_{img_name}")
+
+                # Save hand mask
+                # hand_mask_img = Image.fromarray((hand_mask * 255).astype(np.uint8))
+                # hand_mask_img.save(f"imgs/output/hand_mask_{img_name}")
 
                 return arm_mask, hand_mask
         else:
