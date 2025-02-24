@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
 
+from models import DepthAnythingV2Model
+
 def merge_depth_images(arm_path, hand_path):
     # Read the images
     arm = cv2.imread(arm_path, cv2.IMREAD_GRAYSCALE)
@@ -84,17 +86,12 @@ def main():
     
     # Merge the images
     result = merge_depth_images(arm_image_path, hand_image_path)
-
-    # result = interpolate_gap(arm_image_path, hand_image_path)
-
-    # Define the kernel for morphological operations
-    # kernel = np.ones((7, 7), np.uint8)
-
-    # Apply morphological closing
-    result_image = result # cv2.morphologyEx(result, cv2.MORPH_CLOSE, kernel)
     
     # Save the result
-    cv2.imwrite('./imgs/output/merged_depth.png', result_image)
+    cv2.imwrite('./imgs/output/merged_depth.png', result)
+
+    depth_anything_model = DepthAnythingV2Model()
+    depth_anything_model.process_image("imgs/output", "merged_depth.png")
 
 if __name__ == "__main__":
     main()

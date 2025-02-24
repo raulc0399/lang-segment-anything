@@ -16,7 +16,7 @@ if generate_depth:
 
     for img_name in ["l.png", "r.png"]:
         # zoe_model.process_image(img_name)
-        depth_anything_model.process_image(img_name)
+        depth_anything_model.process_image("imgs", img_name)
 else:
     langsam_model = LangSAMModel()
     

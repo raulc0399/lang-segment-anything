@@ -96,8 +96,8 @@ class DepthAnythingV2Model:
         self.model.load_state_dict(torch.load(f'checkpoints/depth_anything_v2_{encoder}.pth', map_location='cpu'))
         self.model = self.model.to(device).eval()
         
-    def process_image(self, img_name):
-        raw_img = cv2.imread(f"imgs/{img_name}")
+    def process_image(self, img_path, img_name):
+        raw_img = cv2.imread(f"{img_path}/{img_name}")
         depth = self.model.infer_image(raw_img)
 
         depth = (depth - depth.min()) / (depth.max() - depth.min()) * 255.0
