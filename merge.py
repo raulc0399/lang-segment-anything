@@ -80,7 +80,7 @@ def interpolate_gap(arm_path, hand_path):
     return result
 
 def main():
-    # Paths to your images
+    # right
     arm_image_path = './imgs/output/depth_arms_masked_r.png'  # Image 1
     hand_image_path = './imgs/r_controlnet_img.png'  # Image 2
     
@@ -88,10 +88,21 @@ def main():
     result = merge_depth_images(arm_image_path, hand_image_path)
     
     # Save the result
-    cv2.imwrite('./imgs/output/merged_depth.png', result)
+    cv2.imwrite('./imgs/output/merged_depth_r.png', result)
+
+    # left
+    arm_image_path = './imgs/output/depth_arms_masked_l.png'  # Image 1
+    hand_image_path = './imgs/l_controlnet_img.png'  # Image 2
+    
+    # Merge the images
+    result = merge_depth_images(arm_image_path, hand_image_path)
+    
+    # Save the result
+    cv2.imwrite('./imgs/output/merged_depth_l.png', result)
 
     depth_anything_model = DepthAnythingV2Model()
-    depth_anything_model.process_image("imgs/output", "merged_depth.png")
+    depth_anything_model.process_image("imgs/output", "merged_depth_r.png")
+    depth_anything_model.process_image("imgs/output", "merged_depth_l.png")
 
 if __name__ == "__main__":
     main()
