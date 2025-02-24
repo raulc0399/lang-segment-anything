@@ -90,13 +90,12 @@ def main():
     hand_image_path = './imgs/r_controlnet_img.png'  # Image 2
     
     # Merge the images
-    # result = merge_depth_images(arm_image_path, hand_image_path)
+    result = merge_depth_images(arm_image_path, hand_image_path)
 
-
-    result = interpolate_gap(arm_image_path, hand_image_path)
+    # result = interpolate_gap(arm_image_path, hand_image_path)
     
     # Save the result
-    cv2.imwrite('./imgs/output/merged_depth.2.png', result)
+    cv2.imwrite('./imgs/output/merged_depth.png', result)
 
 if __name__ == "__main__":
     main()
